@@ -33,23 +33,16 @@ int main(void) {
 	printf("\n");
 
 	// === map ===
-	int square(int x) {
-		return x * x;
-	}
-	int *squared = map(square, numbers);
+	int square(int x) { return x * x; }
+	int *squared = map(square, numbers, size);
 	for (size_t i = 0; i < size; i += 1) {
 		printf("squared[%zu] = %d\n", i, squared[i]);
 	}
 	printf("\n");
 
 	// === reduce ===
-	int add(int a, int b) {
-		return a + b;
-	}
-
-	// We have to pass the size explicitly here, because we don't know the size
-	// of SQUARED anymore after it became a pointer.
-	int sum = reducen(add, squared, size);
+	int add(int a, int b) { return a + b; }
+	int sum = reduce(add, squared, size);
 	printf("sum of squares = %d\n", sum);
 
 	return EXIT_SUCCESS;

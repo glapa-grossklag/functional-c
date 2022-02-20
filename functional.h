@@ -7,39 +7,31 @@
  * Calls FUNCTION on N elements of the array SOURCE. Returns an array
  * (statically-allocated) with the result.
  */
-#define mapn(function, source, n) ({ \
+#define map(function, source, n) ({ \
+	__auto_type function_ = (function); \
+	__auto_type source_ = (source); \
+	__auto_type n_ = (n); \
 	typeof(source) destination; \
-	for (size_t i = 0; i < (n); i += 1) { \
-		destination[i] = (function)((source)[i]); \
+	for (size_t i = 0; i < n_; i += 1) { \
+		destination[i] = function_(source_[i]); \
 	} \
 	destination; \
 })
-
-/**
- * Calls FUNCTION on each element of the array SOURCE. Returns an array
- * (statically-allocated) with the result. The array SOURCE must have been
- * statically-allocated.
- */
-#define map(function, source) (mapn((function), (source), sizeof(source) / sizeof(source[0])))
 
 /**
  * Reduces N elements of the array SOURCE by calling FUNCTION. The function
  * FUNCTION must take two elements. Returns an array (statically-allocated) with
  * the result.
  */
-#define reducen(function, source, n) ({ \
-	__auto_type result = (source)[0]; \
-	for (size_t i = 1; i < n; i += 1) { \
-		result = (function)(result, (source)[i]); \
+#define reduce(function, source, n) ({ \
+	__auto_type function_ = (function); \
+	__auto_type source_ = (source); \
+	__auto_type n_ = (n); \
+	__auto_type result = source_[0]; \
+	for (size_t i = 1; i < n_; i += 1) { \
+		result = function_(result, source_[i]); \
 	} \
 	result; \
 })
-
-/**
- * Reduces each element of the array SOURCE by calling FUNCTION. The function
- * FUNCTION must take two elements. Returns an array (statically-allocated) with
- * the result. The array SOURCE must have been statically-allocated.
- */
-#define reduce(function, source) (reducen((function), (source), sizeof(source) / sizeof(source[0])))
 
 #endif
