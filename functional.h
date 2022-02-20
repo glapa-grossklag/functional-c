@@ -9,8 +9,8 @@
  */
 #define mapn(function, source, n) ({ \
 	typeof(source) destination; \
-	for (size_t i = 0; i < n; i += 1) { \
-		destination[i] = function(source[i]); \
+	for (size_t i = 0; i < (n); i += 1) { \
+		destination[i] = (function)((source)[i]); \
 	} \
 	destination; \
 })
@@ -20,7 +20,7 @@
  * (statically-allocated) with the result. The array SOURCE must have been
  * statically-allocated.
  */
-#define map(function, source) (mapn(function, source, sizeof(source) / sizeof(source[0])))
+#define map(function, source) (mapn((function), (source), sizeof(source) / sizeof(source[0])))
 
 /**
  * Reduces N elements of the array SOURCE by calling FUNCTION. The function
@@ -28,9 +28,9 @@
  * the result.
  */
 #define reducen(function, source, n) ({ \
-	__auto_type result = source[0]; \
+	__auto_type result = (source)[0]; \
 	for (size_t i = 1; i < n; i += 1) { \
-		result = function(result, source[i]); \
+		result = (function)(result, (source)[i]); \
 	} \
 	result; \
 })
@@ -40,6 +40,6 @@
  * FUNCTION must take two elements. Returns an array (statically-allocated) with
  * the result. The array SOURCE must have been statically-allocated.
  */
-#define reduce(function, source) (reducen(function, source, sizeof(source) / sizeof(source[0])))
+#define reduce(function, source) (reducen((function), (source), sizeof(source) / sizeof(source[0])))
 
 #endif
